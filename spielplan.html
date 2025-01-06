@@ -13,7 +13,7 @@
             margin: 0;
             padding: 0;
         }
-
+    
         /* Header-Styling */
         header {
             background-color: #1a1a1a;
@@ -25,63 +25,63 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             border-bottom: 3px solid #222;
         }
-
+    
         header .logo-container {
             display: flex;
             align-items: center;
         }
-
+    
         header img {
             width: 120px;
             height: auto;
             margin-right: 15px;
             transition: transform 0.3s ease;
         }
-
+    
         header img:hover {
             transform: scale(1.05);
         }
-
+    
         header h1 {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: bold;
             margin: 0;
             text-transform: uppercase;
         }
-
+    
         header nav {
             display: flex;
-            gap: 20px;
+            gap: 10px;
         }
-
+    
         header nav a {
             color: white;
             text-decoration: none;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            padding: 8px 20px;
+            padding: 8px 15px;
             border-radius: 20px;
             background-color: #333;
             transition: background-color 0.3s ease;
         }
-
+    
         header nav a:hover {
             background-color: #555;
         }
-
+    
         header nav a.active {
             background-color: #dc092f;
             font-weight: bold;
         }
-
+    
         /* Language Selector */
         .language-selector {
-            margin-left: 30px;
+            margin-left: 20px;
         }
-
+    
         .language-selector select {
             padding: 8px 15px;
-            font-size: 16px;
+            font-size: 14px;
             border-radius: 30px;
             border: none;
             background-color: #dc092f;
@@ -89,11 +89,11 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-
+    
         .language-selector select:hover {
             background-color: #a40725;
         }
-
+    
         /* Spielplan und Ergebnisse */
         #game-schedule {
             margin: 20px;
@@ -102,14 +102,14 @@
             background-color: white;
             box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
         }
-
+    
         .game-header {
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 10px;
             color: #dc092f;
         }
-
+    
         /* Neu gestaltete Spielplankarten */
         .game {
             background-color: #ffffff;
@@ -119,25 +119,26 @@
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
             align-items: center;
         }
-
+    
         .game-card {
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
-
+    
         .game-card .team {
             display: flex;
             align-items: center;
             justify-content: center;
             flex: 1;
         }
-
+    
         .game-card .team img {
             width: 40px;
             height: 40px;
             margin-right: 10px;
         }
-
+    
         .game-card .game-info {
             display: flex;
             justify-content: center;
@@ -147,25 +148,92 @@
             font-weight: bold;
             color: #333;
         }
-
+    
         .game-card .game-info .game-time {
             font-size: 16px;
             color: #dc092f;
             margin-right: 20px;
         }
-
+    
         .game-card .game-info .score {
             font-size: 22px;
             color: #dc092f;
         }
-
+    
         .game-card .game-info .game-date {
             font-size: 18px;
             font-weight: 600;
             color: #333;
             margin-right: 20px;
         }
+    
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+    
+            header nav {
+                flex-direction: column;
+                width: 100%;
+            }
+    
+            header nav a {
+                width: 100%;
+                padding: 12px;
+                text-align: center;
+            }
+    
+            header h1 {
+                font-size: 24px;
+            }
+    
+            .language-selector {
+                margin-top: 10px;
+            }
+    
+            #game-schedule {
+                margin: 10px;
+                padding: 15px;
+            }
+    
+            .game-card {
+                flex-direction: column;
+                align-items: center;
+            }
+    
+            .game-card .team {
+                flex-direction: column;
+                margin-bottom: 10px;
+            }
+    
+            .game-card .game-info {
+                flex-direction: column;
+                margin-bottom: 10px;
+            }
+        }
+    
+        /* Styles for very small devices */
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 20px;
+            }
+    
+            header img {
+                width: 100px;
+            }
+    
+            .language-selector select {
+                font-size: 12px;
+            }
+    
+            .game-card .game-info .score {
+                font-size: 18px;
+            }
+        }
     </style>
+    
 </head>
 
 <body>
