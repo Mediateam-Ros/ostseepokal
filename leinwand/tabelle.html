@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Standings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Hellerer Hintergrund */
+            color: black; /* Dunkelgrauer Text für bessere Lesbarkeit */
+            margin: 0;
+            padding: 0;
+        }
+
+        #table {
+            margin-top: 40px;
+            text-align: left;
+            padding: 10px;
+            border-radius: 15px;
+            width: 95%;
+            max-width: 1920px;
+            height: auto;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1); /* Sanfte Schattierung */
+            background-color: white; /* Weißer Hintergrund für die Tabelle */
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            /* border: 1px solid #ddd; Hellerer Rand */
+            text-align: center;
+            font-size: 24px;
+        }
+
+        th {
+            background-color: #dc092f; /* Gold für den Header */
+            color: #333;
+            font-weight: bolder;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9; /* Sehr hellgrauer Hintergrund für die Zellen */
+            color: #333;
+        }
+
+        img {
+            width: 60px;  /* Vergrößertes Logo */
+            height: 60px;
+            vertical-align: middle;
+            margin-right: 15px;
+        }
+
+        .team-name {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-name img {
+            margin-right: 20px;
+        }
+
+        .place {
+            font-size: 45px;
+            font-weight: bold;
+            color: #dc092f; /* Orange für die Position */
+        }
+
+        .team-name, .points, .games, .goal-difference {
+            font-size: 35px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .team-logo-column {
+            width: 120px; /* Spalte für das Logo */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="table">Loading data...</div>
+
+    <!-- Firebase Integration -->
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-database-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCFhS0aAgq0RQdgncI1lD1adbyVHGDgmcI",
+            authDomain: "videowand-43140.firebaseapp.com",
+            databaseURL: "https://videowand-43140-default-rtdb.europe-west1.firebasedatabase.app/",
+            projectId: "videowand-43140",
+            storageBucket: "videowand-43140.appspot.com",
+            messagingSenderId: "777250256351",
+            appId: "1:777250256351:web:f0700b48c645037c82006a"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        async function loadGames() {
+            try {
+                // Load game and team data
+                const gamesSnapshot = await database.ref('stadiums').once('value');
+                const gamesData = gamesSnapshot.val();
+                console.log('Game data:', gamesData);
+
+                const teamsSnapshot = await database.ref('teams').once('value');
+                const teamsData = teamsSnapshot.val();
+                console.log('Team data:', teamsData);
+
+                if (!gamesData || !teamsData) {
+                    document.getElementById("table").innerText = "No data available.";
+                    return;
+                }
+
+                const tableContainer = document.getElementById("table");
+                tableContainer.innerHTML = '';
+
+                const now = new Date();
+
+                const gamesArray = Object.keys(gamesData).map((gameId) => ({
+                    id: gameId,
+                    ...gamesData[gameId]
+                }));
+
+                // Initialize table
+                let tableHTML = `
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Position</th>
+                                    <th class="team-logo-column">Logo</th> <!-- Neue Spalte für das Logo -->
+                                    <th>Team</th>
+                                    <th>Points</th>
+                                    <th>Games Played</th>
+                                    <th>Goal Difference</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                const standings = {};
+                const gamesCount = {};  // Counter for games played
+
+                // Add all teams to the table, even those without games
+                Object.keys(teamsData).forEach(teamId => {
+                    const teamName = teamsData[teamId].name;
+                    const teamLogo = teamsData[teamId].logo;
+                    standings[teamName] = { points: 0, goalsFor: 0, goalsAgainst: 0, logo: teamLogo };
+                    gamesCount[teamName] = 0;  // Initial counter for each team
+                });
+
+                // Filter and calculate points and goal difference for completed games
+                gamesArray.forEach(game => {
+                    if (game.periode !== "Endstand") return;  // Only consider completed games
+
+                    const homeTeam = game.home.name || "Home";
+                    const awayTeam = game.away.name || "Away";
+                    const homeScore = game.home.score || 0;
+                    const awayScore = game.away.score || 0;
+
+                    // Calculate goal difference
+                    const homeGoalDifference = homeScore - awayScore;
+                    const awayGoalDifference = awayScore - homeScore;
+
+                    // Add goals and points to the totals
+                    standings[homeTeam].goalsFor += homeScore;
+                    standings[awayTeam].goalsFor += awayScore;
+                    standings[homeTeam].goalsAgainst += awayScore;
+                    standings[awayTeam].goalsAgainst += homeScore;
+
+                    // Points for wins and draws
+                    if (homeScore > awayScore) {
+                        standings[homeTeam].points += 3;
+                    } else if (homeScore < awayScore) {
+                        standings[awayTeam].points += 3;
+                    } else {
+                        standings[homeTeam].points += 1;
+                        standings[awayTeam].points += 1;
+                    }
+
+                    // Increase games played count for both teams
+                    gamesCount[homeTeam]++;
+                    gamesCount[awayTeam]++;
+                });
+
+                // Sort teams by points and goal difference
+                const sortedTeams = Object.keys(standings).sort((a, b) => {
+                    const pointsDifference = standings[b].points - standings[a].points;
+                    if (pointsDifference !== 0) return pointsDifference;
+
+                    const goalDifferenceA = standings[a].goalsFor - standings[a].goalsAgainst;
+                    const goalDifferenceB = standings[b].goalsFor - standings[b].goalsAgainst;
+                    return goalDifferenceB - goalDifferenceA;
+                });
+
+                // Add teams to the table
+                let place = 1;
+                sortedTeams.forEach(team => {
+                    const teamData = standings[team];
+                    const goalDifference = teamData.goalsFor - teamData.goalsAgainst;
+                    tableHTML += `
+                        <tr>
+                            <td class="place">${place++}</td>
+                            <td class="team-logo-column"><img src="${teamData.logo}" alt="${team} Logo"></td> <!-- Logo-Spalte -->
+                            <td class="team-name">${team}</td>
+                            <td class="points">${teamData.points}</td>
+                            <td class="games">${gamesCount[team]}</td>
+                            <td class="goal-difference">${teamData.goalsFor} : ${teamData.goalsAgainst} (${goalDifference})</td>
+                        </tr>
+                    `;
+                });
+
+                tableHTML += '</tbody></table></div>';
+                tableContainer.innerHTML = tableHTML;
+
+            } catch (error) {
+                console.error('Error loading game data:', error);
+                document.getElementById("table").innerText = "Error loading game data.";
+            }
+        }
+
+        loadGames();
+        setInterval(loadGames, 10000);
+    </script>
+</body>
+
+</html>

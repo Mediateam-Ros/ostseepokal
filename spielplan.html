@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ostseepokal - Spielplan & Ergebnisse</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header-Styling */
+        header {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #222;
+        }
+
+        header .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        header img {
+            width: 120px;
+            height: auto;
+            margin-right: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        header img:hover {
+            transform: scale(1.05);
+        }
+
+        header h1 {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        header nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 20px;
+            background-color: #333;
+            transition: background-color 0.3s ease;
+        }
+
+        header nav a:hover {
+            background-color: #555;
+        }
+
+        header nav a.active {
+            background-color: #dc092f;
+            font-weight: bold;
+        }
+
+        /* Language Selector */
+        .language-selector {
+            margin-left: 30px;
+        }
+
+        .language-selector select {
+            padding: 8px 15px;
+            font-size: 16px;
+            border-radius: 30px;
+            border: none;
+            background-color: #dc092f;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .language-selector select:hover {
+            background-color: #a40725;
+        }
+
+        /* Spielplan und Ergebnisse */
+        #game-schedule {
+            margin: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #dc092f;
+        }
+
+        /* Neu gestaltete Spielplankarten */
+        .game {
+            background-color: #ffffff;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            align-items: center;
+        }
+
+        .game-card {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .game-card .team {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .game-card .team img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .game-card .game-info {
+            display: flex;
+            justify-content: center;
+            flex: 1;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .game-card .game-info .game-time {
+            font-size: 16px;
+            color: #dc092f;
+            margin-right: 20px;
+        }
+
+        .game-card .game-info .score {
+            font-size: 22px;
+            color: #dc092f;
+        }
+
+        .game-card .game-info .game-date {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="https://api.hockeydata.net/img/icehockey/ebel/team-logos/16217/32859.png" alt="Ostseepokal Logo">
+            <h1 id="title">Ostseepokal 2025</h1>
+        </div>
+        <nav>
+            <a href="spielplan.html" id="spielplan" class="nav-link active">Spielplan und Ergebnisse</a>
+            <a href="#table" id="table" class="nav-link">Tabelle</a>
+        </nav>
+        <div class="language-selector">
+            <select id="languageSelector">
+                <option value="de">Deutsch</option>
+                <option value="en">English</option>
+                <option value="sv">Svenska</option>
+            </select>
+        </div>
+    </header>
+
+
+    <div id="game-schedule">
+        <h2 id="schedule-title">Spielplan und Ergebnisse</h2>
+        <div id="schedule"></div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-database-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCFhS0aAgq0RQdgncI1lD1adbyVHGDgmcI",
+            authDomain: "videowand-43140.firebaseapp.com",
+            databaseURL: "https://videowand-43140-default-rtdb.europe-west1.firebasedatabase.app/",
+            projectId: "videowand-43140",
+            storageBucket: "videowand-43140.appspot.com",
+            messagingSenderId: "777250256351",
+            appId: "1:777250256351:web:f0700b48c645037c82006a"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        let currentLanguage = 'de';
+
+        const translations = {
+            de: {
+                title: 'Ostseepokal 2025',
+                subtitle: 'Alle Spiele und Ergebnisse auf einen Blick',
+                scheduleTitle: 'Spielplan und Ergebnisse',
+                tableTitle: 'Tabelle',
+                noGamesFound: 'Keine Spiele gefunden',
+                hourLabel: 'Uhr'
+            },
+            en: {
+                title: 'Ostseepokal 2025',
+                subtitle: 'All games and results at a glance',
+                scheduleTitle: 'Schedule & Results',
+                tableTitle: 'Table',
+                noGamesFound: 'No games found',
+                hourLabel: 'PM'
+            },
+            sv: {
+                title: 'Ostseepokal 2025',
+                subtitle: 'Alla spel och resultat på ett ställe',
+                scheduleTitle: 'Spelschema & Resultat',
+                tableTitle: 'Tabell',
+                noGamesFound: 'Inga spel funna',
+                hourLabel: 'Klockan'
+            }
+        };
+
+
+        document.getElementById('languageSelector').addEventListener('change', (e) => {
+            currentLanguage = e.target.value;
+            updateLanguage();
+            loadGames();
+        });
+
+        function updateLanguage() {
+            const lang = translations[currentLanguage];
+            document.getElementById('title').innerText = lang.title;
+            document.getElementById('schedule-title').innerText = lang.scheduleTitle;
+            document.getElementById('spielplan').innerText = lang.scheduleTitle;
+            document.getElementById('table').innerText = lang.tableTitle;
+        }
+
+
+        async function loadGames() {
+            try {
+                const gamesSnapshot = await database.ref('stadiums').once('value');
+                const gamesData = gamesSnapshot.val();
+
+                if (!gamesData) {
+                    console.log(translations[currentLanguage].noGamesFound);
+                    return;
+                }
+
+                const scheduleContainer = document.getElementById("schedule");
+                scheduleContainer.innerHTML = '';  // Vorherigen Inhalt löschen
+
+                const gamesByDate = {};
+
+                // Gruppierung der Spiele nach Datum
+                for (const gameId in gamesData) {
+                    const game = gamesData[gameId];
+                    const gameTime = new Date(game.gameTime);
+                    const gameDate = gameTime.toLocaleDateString(currentLanguage === 'de' ? 'de-DE' : (currentLanguage === 'en' ? 'en-GB' : 'sv-SE'));
+
+                    if (!gamesByDate[gameDate]) {
+                        gamesByDate[gameDate] = [];
+                    }
+                    gamesByDate[gameDate].push(game);
+                }
+
+                // Spiele nach Datum gruppiert anzeigen
+                for (const date in gamesByDate) {
+                    const dateGroup = gamesByDate[date];
+                    const groupDate = new Date(date);
+
+                    // Gruppenkopf mit Datum und Tag anzeigen
+                    const groupHeader = groupDate.toLocaleDateString(currentLanguage === 'de' ? 'de-DE' : (currentLanguage === 'en' ? 'en-GB' : 'sv-SE'), {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+
+                    scheduleContainer.innerHTML += `
+                <div class="game-header">${groupHeader}</div>
+            `;
+
+                    let gameNumber = 1;
+
+                    // Spiele für das jeweilige Datum anzeigen
+                    dateGroup.forEach(game => {
+                        const homeTeam = game.home;
+                        const awayTeam = game.away;
+                        const gameTime = new Date(game.gameTime);
+                        const currentTime = new Date();
+
+                        let formattedTime;
+                        let hourLabel = translations[currentLanguage].hourLabel;
+
+                        if (currentLanguage === 'en') {
+                            // Uhrzeit im 12-Stunden-Format mit AM/PM für Englisch
+                            const gameHour = gameTime.getHours();
+                            const gameMinute = gameTime.getMinutes().toString().padStart(2, '0');
+                            const ampm = gameHour >= 12 ? 'PM' : 'AM';
+                            const formattedHour = gameHour % 12 === 0 ? 12 : gameHour % 12;
+                            formattedTime = `${formattedHour}:${gameMinute} ${ampm}`;
+                        } else {
+                            // Uhrzeit im 24-Stunden-Format für Deutsch und Schwedisch
+                            const gameHour = gameTime.getHours().toString().padStart(2, '0');
+                            const gameMinute = gameTime.getMinutes().toString().padStart(2, '0');
+                            formattedTime = `${gameHour}:${gameMinute} ${hourLabel}`;
+                        }
+
+                        const homeScore = homeTeam.score;
+                        const awayScore = awayTeam.score;
+
+                        let result = '';
+                        let gameDetails = `${formattedTime}`;
+                        if (currentTime >= gameTime) {
+                            result = (homeScore !== undefined && awayScore !== undefined) ? `${homeScore} : ${awayScore}` : '';
+                        } else {
+                            result = gameDetails;
+                        }
+
+                        scheduleContainer.innerHTML += `
+                    <div class="game">
+                        <div class="game-card">
+                            <div class="team">
+                                <img src="${homeTeam.logo}" alt="${homeTeam.name} Logo">
+                                <span>${homeTeam.name}</span>
+                            </div>
+                            <div class="game-info">
+                                <div class="score">${result}</div>
+                            </div>
+                            <div class="team">
+                                <img src="${awayTeam.logo}" alt="${awayTeam.name} Logo">
+                                <span>${awayTeam.name}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                        gameNumber++;
+                    });
+                }
+
+            } catch (error) {
+                console.error("Fehler beim Laden der Daten:", error);
+            }
+        }
+
+        updateLanguage();  // Initialisieren der Sprache
+        loadGames();
+        setInterval(loadGames, 10000); // Alle 10 Sekunden aktualisieren
+
+    </script>
+</body>
+
+</html>
