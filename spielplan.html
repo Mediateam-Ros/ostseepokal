@@ -74,7 +74,6 @@
             font-weight: bold;
         }
 
-        /* Language Selector */
         .language-selector {
             margin-left: 20px;
         }
@@ -94,7 +93,6 @@
             background-color: #a40725;
         }
 
-        /* Spielplan und Ergebnisse */
         #game-schedule {
             margin: 20px;
             padding: 20px;
@@ -110,7 +108,6 @@
             color: #dc092f;
         }
 
-        /* Neu gestaltete Spielplankarten */
         .game {
             background-color: #ffffff;
             margin-bottom: 20px;
@@ -162,11 +159,22 @@
             color: #dc092f;
         }
 
+        .game-card .game-info .periode {
+            font-size: 17px;
+            margin-top: 5px;
+            /* color: #dc092f; */
+        }
+
         .game-info .game-date {
             font-size: 18px;
             font-weight: 600;
             color: #333;
             margin-right: 10px;
+        }
+
+        .middle {
+            display: flex;
+            flex-direction: column;
         }
 
         @media (max-width: 768px) {
@@ -215,7 +223,6 @@
             }
         }
 
-        /* Styles for very small devices */
         @media (max-width: 480px) {
             header h1 {
                 font-size: 20px;
@@ -342,7 +349,7 @@
                 scheduleContainer.innerHTML = '';
 
                 const gamesByDate = {};
-                let globalGameNumber = 1; // Globale Spielnummer
+                let globalGameNumber = 1;
 
                 for (const gameId in gamesData) {
                     const game = gamesData[gameId];
@@ -420,8 +427,9 @@
                                     <img src="${homeTeam.logo}" alt="${homeTeam.name} Logo">
                                     <span>${homeTeam.name}</span>
                                 </div>
-                                <div class="game-info">
+                                <div class="game-info middle">
                                     <div class="score">${result}</div>
+                                    <div class="periode">${game.periode || ""}</div>
                                 </div>
                                 <div class="team">
                                     <span>${awayTeam.name}</span>
