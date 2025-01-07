@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Standings</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header-Styling */
+        header {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #222;
+            flex-wrap: wrap;
+        }
+
+        header .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        header img {
+            width: 120px;
+            height: auto;
+            margin-right: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        header img:hover {
+            transform: scale(1.05);
+        }
+
+        header h1 {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        header nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 20px;
+            background-color: #333;
+            transition: background-color 0.3s ease;
+        }
+
+        header nav a:hover {
+            background-color: #555;
+        }
+
+        header nav a.active {
+            background-color: #dc092f;
+            font-weight: bold;
+        }
+
+        /* Language Selector */
+        .language-selector {
+            margin-left: 30px;
+        }
+
+        .language-selector select {
+            padding: 8px 15px;
+            font-size: 16px;
+            border-radius: 30px;
+            border: none;
+            background-color: #dc092f;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .language-selector select:hover {
+            background-color: #a40725;
+        }
+
+        #table-con {
+            margin-top: 40px;
+            text-align: left;
+            padding: 10px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 1920px;
+            height: auto;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        th,
+        td {
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        th {
+            background-color: #dc092f;
+            color: #333;
+            font-weight: bolder;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        img {
+            width: 40px;
+            height: 40px;
+            vertical-align: middle;
+            margin-right: 15px;
+        }
+
+        .team-name {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-name img {
+            margin-right: 20px;
+        }
+
+        .place {
+            font-size: 25px;
+            font-weight: bold;
+            color: #dc092f;
+        }
+
+        .team-name,
+        .points,
+        .games,
+        .goal-difference {
+            font-size: 20px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .team-logo-column {
+            width: 120px;
+        }
+
+        #game-schedule {
+            margin: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            header nav {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            header nav a {
+                width: 100%;
+                padding: 12px;
+                text-align: center;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+
+            .language-selector {
+                margin-top: 10px;
+            }
+
+            #game-schedule {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .game-card {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 20px;
+            }
+
+            header img {
+                width: 100px;
+            }
+
+            .language-selector select {
+                font-size: 12px;
+            }
+
+            .place {
+                font-size: 20px;
+            }
+
+            th,
+            td {
+                font-size: 15px;
+            }
+
+            .team-name,
+            .points,
+            .games,
+            .goal-difference {
+                font-size: 15px;
+            }
+
+            img {
+                width: 30px;
+                height: 30px;
+            }
+
+            .team-logo-column {
+                width: 10px;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="https://api.hockeydata.net/img/icehockey/ebel/team-logos/16217/32859.png" alt="Ostseepokal Logo">
+            <h1 id="title">Ostseepokal 2025</h1>
+        </div>
+        <nav>
+            <a href="spielplan.html" id="spielplan" class="nav-link">Spielplan und Ergebnisse</a>
+            <a href="tabelle.html" id="table" class="nav-link active">Tabelle</a>
+        </nav>
+        <div class="language-selector">
+            <select id="languageSelector">
+                <option value="de">Deutsch</option>
+                <option value="en">English</option>
+                <option value="sv">Svenska</option>
+            </select>
+        </div>
+    </header>
+
+    <div id="game-schedule">
+        <h2 id="schedule-title">Tabelle</h2>
+        <div id="table-con"></div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-database-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCFhS0aAgq0RQdgncI1lD1adbyVHGDgmcI",
+            authDomain: "videowand-43140.firebaseapp.com",
+            databaseURL: "https://videowand-43140-default-rtdb.europe-west1.firebasedatabase.app/",
+            projectId: "videowand-43140",
+            storageBucket: "videowand-43140.appspot.com",
+            messagingSenderId: "777250256351",
+            appId: "1:777250256351:web:f0700b48c645037c82006a"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        const translations = {
+            de: {
+                schedule: "Spielplan und Ergebnisse",
+                table: "Tabelle",
+                scheduleTitle: "Tabelle",
+                noData: "Keine Daten verfügbar.",
+                error: "Fehler beim Laden der Spieldaten.",
+                tableHeaders: {
+                    position: "Position",
+                    team: "Team",
+                    points: "Punkte",
+                    gamesPlayed: "Spiele",
+                    goalDifference: "Torverhältnis"
+                }
+            },
+            en: {
+                schedule: "Schedule and Results",
+                table: "Standings",
+                scheduleTitle: "Standings",
+                noData: "No data available.",
+                error: "Error loading game data.",
+                tableHeaders: {
+                    position: "Position",
+                    team: "Team",
+                    points: "Points",
+                    gamesPlayed: "Games Played",
+                    goalDifference: "Goal Difference"
+                }
+            },
+            sv: {
+                schedule: "Schema och resultat",
+                table: "Tabell",
+                scheduleTitle: "Tabell",
+                noData: "Inga data tillgängliga.",
+                error: "Fel vid inläsning av speldata.",
+                tableHeaders: {
+                    position: "Position",
+                    team: "Lag",
+                    points: "Poäng",
+                    gamesPlayed: "Spelade Matcher",
+                    goalDifference: "Målskillnad"
+                }
+            }
+        };
+
+
+        const languageSelector = document.getElementById('languageSelector');
+
+        function updateLanguage(language) {
+            const translation = translations[language];
+
+            document.getElementById('spielplan').innerText = translation.schedule;
+            document.getElementById('table').innerText = translation.table;
+            document.getElementById('schedule-title').innerText = translation.scheduleTitle;
+
+            const tableCon = document.getElementById("table-con");
+            if (tableCon.innerText === translations.de.noData ||
+                tableCon.innerText === translations.en.noData ||
+                tableCon.innerText === translations.sv.noData) {
+                tableCon.innerText = translation.noData;
+            }
+
+            if (tableCon.innerText === translations.de.error ||
+                tableCon.innerText === translations.en.error ||
+                tableCon.innerText === translations.sv.error) {
+                tableCon.innerText = translation.error;
+            }
+        }
+
+        async function loadGames() {
+            try {
+                // Load game and team data
+                const gamesSnapshot = await database.ref('stadiums').once('value');
+                const gamesData = gamesSnapshot.val();
+
+                const teamsSnapshot = await database.ref('teams').once('value');
+                const teamsData = teamsSnapshot.val();
+
+                if (!gamesData || !teamsData) {
+                    document.getElementById("table-con").innerText = translations[languageSelector.value].noData;
+                    return;
+                }
+
+                const tableContainer = document.getElementById("table-con");
+                tableContainer.innerHTML = '';
+
+                const standings = {};
+                const gamesCount = {};
+
+                Object.keys(teamsData).forEach(teamId => {
+                    const teamName = teamsData[teamId].name;
+                    const teamLogo = teamsData[teamId].logo;
+                    standings[teamName] = { points: 0, goalsFor: 0, goalsAgainst: 0, logo: teamLogo };
+                    gamesCount[teamName] = 0;
+                });
+
+                Object.keys(gamesData).forEach(gameId => {
+                    const game = gamesData[gameId];
+                    if (game.periode !== "Endstand") return;
+
+                    const homeTeam = game.home.name || "Home";
+                    const awayTeam = game.away.name || "Away";
+                    const homeScore = game.home.score || 0;
+                    const awayScore = game.away.score || 0;
+
+                    standings[homeTeam].goalsFor += homeScore;
+                    standings[awayTeam].goalsFor += awayScore;
+                    standings[homeTeam].goalsAgainst += awayScore;
+                    standings[awayTeam].goalsAgainst += homeScore;
+
+                    if (homeScore > awayScore) {
+                        standings[homeTeam].points += 3;
+                    } else if (homeScore < awayScore) {
+                        standings[awayTeam].points += 3;
+                    } else {
+                        standings[homeTeam].points += 1;
+                        standings[awayTeam].points += 1;
+                    }
+
+                    gamesCount[homeTeam]++;
+                    gamesCount[awayTeam]++;
+                });
+
+                const sortedTeams = Object.keys(standings).sort((a, b) => {
+                    const pointsDifference = standings[b].points - standings[a].points;
+                    if (pointsDifference !== 0) return pointsDifference;
+
+                    const goalDifferenceA = standings[a].goalsFor - standings[a].goalsAgainst;
+                    const goalDifferenceB = standings[b].goalsFor - standings[b].goalsAgainst;
+                    return goalDifferenceB - goalDifferenceA;
+                });
+
+                let tableHTML = `
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>${translations[languageSelector.value].tableHeaders.position}</th>
+                            <th class="team-logo-column"></th>
+                            <th>${translations[languageSelector.value].tableHeaders.team}</th>
+                            <th>${translations[languageSelector.value].tableHeaders.points}</th>
+                            <th>${translations[languageSelector.value].tableHeaders.gamesPlayed}</th>
+                            <th>${translations[languageSelector.value].tableHeaders.goalDifference}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+
+                let place = 1;
+                sortedTeams.forEach(team => {
+                    const teamData = standings[team];
+                    const goalDifference = teamData.goalsFor - teamData.goalsAgainst;
+                    tableHTML += `
+                <tr>
+                    <td class="place">${place++}</td>
+                    <td class="team-logo-column"><img src="${teamData.logo}" alt="${team} Logo"></td>
+                    <td class="team-name">${team}</td>
+                    <td class="points">${teamData.points}</td>
+                    <td class="games">${gamesCount[team]}</td>
+                    <td class="goal-difference">${teamData.goalsFor} : ${teamData.goalsAgainst} (${goalDifference})</td>
+                </tr>
+            `;
+                });
+
+                tableHTML += '</tbody></table></div>';
+                tableContainer.innerHTML = tableHTML;
+
+            } catch (error) {
+                console.error('Error loading game data:', error);
+                document.getElementById("table-con").innerText = translations[languageSelector.value].error;
+            }
+        }
+
+        loadGames();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const defaultLanguage = 'de';
+            languageSelector.value = defaultLanguage;
+            updateLanguage(defaultLanguage);
+        });
+
+        languageSelector.addEventListener('change', (event) => {
+            const selectedLanguage = event.target.value;
+            updateLanguage(selectedLanguage);
+            loadGames();
+        });
+
+        setInterval(loadGames, 10000);
+    </script>
+</body>
+
+</html>

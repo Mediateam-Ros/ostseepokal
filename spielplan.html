@@ -13,7 +13,7 @@
             margin: 0;
             padding: 0;
         }
-    
+
         /* Header-Styling */
         header {
             background-color: #1a1a1a;
@@ -25,35 +25,35 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             border-bottom: 3px solid #222;
         }
-    
+
         header .logo-container {
             display: flex;
             align-items: center;
         }
-    
+
         header img {
             width: 120px;
             height: auto;
             margin-right: 15px;
             transition: transform 0.3s ease;
         }
-    
+
         header img:hover {
             transform: scale(1.05);
         }
-    
+
         header h1 {
             font-size: 28px;
             font-weight: bold;
             margin: 0;
             text-transform: uppercase;
         }
-    
+
         header nav {
             display: flex;
             gap: 10px;
         }
-    
+
         header nav a {
             color: white;
             text-decoration: none;
@@ -64,21 +64,21 @@
             background-color: #333;
             transition: background-color 0.3s ease;
         }
-    
+
         header nav a:hover {
             background-color: #555;
         }
-    
+
         header nav a.active {
             background-color: #dc092f;
             font-weight: bold;
         }
-    
+
         /* Language Selector */
         .language-selector {
             margin-left: 20px;
         }
-    
+
         .language-selector select {
             padding: 8px 15px;
             font-size: 14px;
@@ -89,11 +89,11 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-    
+
         .language-selector select:hover {
             background-color: #a40725;
         }
-    
+
         /* Spielplan und Ergebnisse */
         #game-schedule {
             margin: 20px;
@@ -102,14 +102,14 @@
             background-color: white;
             box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
         }
-    
+
         .game-header {
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 10px;
             color: #dc092f;
         }
-    
+
         /* Neu gestaltete Spielplankarten */
         .game {
             background-color: #ffffff;
@@ -119,26 +119,27 @@
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
             align-items: center;
         }
-    
+
         .game-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-    
+
         .game-card .team {
             display: flex;
             align-items: center;
             justify-content: center;
             flex: 1;
         }
-    
+
         .game-card .team img {
             width: 40px;
             height: 40px;
             margin-right: 10px;
+            margin-left: 10px;
         }
-    
+
         .game-card .game-info {
             display: flex;
             justify-content: center;
@@ -148,92 +149,92 @@
             font-weight: bold;
             color: #333;
         }
-    
-        .game-card .game-info .game-time {
+
+        .game-info .game-time {
             font-size: 16px;
             color: #dc092f;
-            margin-right: 20px;
+            margin-left: 10px;
+            font-weight: bold;
         }
-    
+
         .game-card .game-info .score {
             font-size: 22px;
             color: #dc092f;
         }
-    
-        .game-card .game-info .game-date {
+
+        .game-info .game-date {
             font-size: 18px;
             font-weight: 600;
             color: #333;
-            margin-right: 20px;
+            margin-right: 10px;
         }
-    
-        /* Mobile Styles */
+
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
                 align-items: flex-start;
             }
-    
+
             header nav {
                 flex-direction: column;
                 width: 100%;
             }
-    
+
             header nav a {
                 width: 100%;
                 padding: 12px;
                 text-align: center;
             }
-    
+
             header h1 {
                 font-size: 24px;
             }
-    
+
             .language-selector {
                 margin-top: 10px;
             }
-    
+
             #game-schedule {
                 margin: 10px;
                 padding: 15px;
             }
-    
+
             .game-card {
                 flex-direction: column;
                 align-items: center;
             }
-    
+
             .game-card .team {
                 flex-direction: column;
                 margin-bottom: 10px;
             }
-    
+
             .game-card .game-info {
                 flex-direction: column;
                 margin-bottom: 10px;
             }
         }
-    
+
         /* Styles for very small devices */
         @media (max-width: 480px) {
             header h1 {
                 font-size: 20px;
             }
-    
+
             header img {
                 width: 100px;
             }
-    
+
             .language-selector select {
                 font-size: 12px;
             }
-    
+
             .game-card .game-info .score {
                 font-size: 18px;
             }
         }
     </style>
-    
+
 </head>
 
 <body>
@@ -245,7 +246,7 @@
         </div>
         <nav>
             <a href="spielplan.html" id="spielplan" class="nav-link active">Spielplan und Ergebnisse</a>
-            <a href="#table" id="table" class="nav-link">Tabelle</a>
+            <a href="tabelle.html" id="table" class="nav-link">Tabelle</a>
         </nav>
         <div class="language-selector">
             <select id="languageSelector">
@@ -288,7 +289,8 @@
                 scheduleTitle: 'Spielplan und Ergebnisse',
                 tableTitle: 'Tabelle',
                 noGamesFound: 'Keine Spiele gefunden',
-                hourLabel: 'Uhr'
+                hourLabel: 'Uhr',
+                game: 'Spiel'
             },
             en: {
                 title: 'Ostseepokal 2025',
@@ -296,7 +298,8 @@
                 scheduleTitle: 'Schedule & Results',
                 tableTitle: 'Table',
                 noGamesFound: 'No games found',
-                hourLabel: 'PM'
+                hourLabel: 'PM',
+                game: 'Game'
             },
             sv: {
                 title: 'Ostseepokal 2025',
@@ -304,7 +307,8 @@
                 scheduleTitle: 'Spelschema & Resultat',
                 tableTitle: 'Tabell',
                 noGamesFound: 'Inga spel funna',
-                hourLabel: 'Klockan'
+                hourLabel: 'Klockan',
+                game: 'Match'
             }
         };
 
@@ -335,15 +339,17 @@
                 }
 
                 const scheduleContainer = document.getElementById("schedule");
-                scheduleContainer.innerHTML = '';  // Vorherigen Inhalt löschen
+                scheduleContainer.innerHTML = '';
 
                 const gamesByDate = {};
+                let globalGameNumber = 1; // Globale Spielnummer
 
-                // Gruppierung der Spiele nach Datum
                 for (const gameId in gamesData) {
                     const game = gamesData[gameId];
                     const gameTime = new Date(game.gameTime);
-                    const gameDate = gameTime.toLocaleDateString(currentLanguage === 'de' ? 'de-DE' : (currentLanguage === 'en' ? 'en-GB' : 'sv-SE'));
+                    const gameDate = gameTime.toLocaleDateString(
+                        currentLanguage === 'de' ? 'de-DE' : (currentLanguage === 'en' ? 'en-GB' : 'sv-SE')
+                    );
 
                     if (!gamesByDate[gameDate]) {
                         gamesByDate[gameDate] = [];
@@ -351,26 +357,24 @@
                     gamesByDate[gameDate].push(game);
                 }
 
-                // Spiele nach Datum gruppiert anzeigen
                 for (const date in gamesByDate) {
                     const dateGroup = gamesByDate[date];
                     const groupDate = new Date(date);
 
-                    // Gruppenkopf mit Datum und Tag anzeigen
-                    const groupHeader = groupDate.toLocaleDateString(currentLanguage === 'de' ? 'de-DE' : (currentLanguage === 'en' ? 'en-GB' : 'sv-SE'), {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
+                    const groupHeader = groupDate.toLocaleDateString(
+                        currentLanguage === 'de' ? 'de-DE' : (currentLanguage === 'en' ? 'en-GB' : 'sv-SE'),
+                        {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        }
+                    );
 
                     scheduleContainer.innerHTML += `
                 <div class="game-header">${groupHeader}</div>
             `;
 
-                    let gameNumber = 1;
-
-                    // Spiele für das jeweilige Datum anzeigen
                     dateGroup.forEach(game => {
                         const homeTeam = game.home;
                         const awayTeam = game.away;
@@ -381,14 +385,12 @@
                         let hourLabel = translations[currentLanguage].hourLabel;
 
                         if (currentLanguage === 'en') {
-                            // Uhrzeit im 12-Stunden-Format mit AM/PM für Englisch
                             const gameHour = gameTime.getHours();
                             const gameMinute = gameTime.getMinutes().toString().padStart(2, '0');
                             const ampm = gameHour >= 12 ? 'PM' : 'AM';
                             const formattedHour = gameHour % 12 === 0 ? 12 : gameHour % 12;
                             formattedTime = `${formattedHour}:${gameMinute} ${ampm}`;
                         } else {
-                            // Uhrzeit im 24-Stunden-Format für Deutsch und Schwedisch
                             const gameHour = gameTime.getHours().toString().padStart(2, '0');
                             const gameMinute = gameTime.getMinutes().toString().padStart(2, '0');
                             formattedTime = `${gameHour}:${gameMinute} ${hourLabel}`;
@@ -405,28 +407,32 @@
                             result = gameDetails;
                         }
 
+                        const gameNumber = game.gameNumber || translations[currentLanguage].game + " " + globalGameNumber++; // Spielnummer: Entweder aus DB oder inkrementieren
+
                         scheduleContainer.innerHTML += `
                     <div class="game">
-                        <div class="game-card">
-                            <div class="team">
-                                <img src="${homeTeam.logo}" alt="${homeTeam.name} Logo">
-                                <span>${homeTeam.name}</span>
-                            </div>
+                        <div>
                             <div class="game-info">
-                                <div class="score">${result}</div>
+                                <span class="game-date">${gameNumber}</span> | <span class="game-time">${formattedTime}</span>
                             </div>
-                            <div class="team">
-                                <img src="${awayTeam.logo}" alt="${awayTeam.name} Logo">
-                                <span>${awayTeam.name}</span>
+                            <div class="game-card">
+                                <div class="team">
+                                    <img src="${homeTeam.logo}" alt="${homeTeam.name} Logo">
+                                    <span>${homeTeam.name}</span>
+                                </div>
+                                <div class="game-info">
+                                    <div class="score">${result}</div>
+                                </div>
+                                <div class="team">
+                                    <span>${awayTeam.name}</span>
+                                    <img src="${awayTeam.logo}" alt="${awayTeam.name} Logo">
+                                </div>
                             </div>
                         </div>
                     </div>
                 `;
-
-                        gameNumber++;
                     });
                 }
-
             } catch (error) {
                 console.error("Fehler beim Laden der Daten:", error);
             }
