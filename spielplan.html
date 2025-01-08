@@ -365,12 +365,6 @@
                     gamesByDate[gameDate].push(game);
                 }
 
-                gamesByDate.sort((a, b) => {
-                    const timeA = new Date(a.gameTime);
-                    const timeB = new Date(b.gameTime);
-                    return timeA - timeB;
-                });
-
                 for (const date in gamesByDate) {
                     const dateGroup = gamesByDate[date];
                     const groupDate = new Date(date);
