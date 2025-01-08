@@ -275,13 +275,14 @@
 
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyCFhS0aAgq0RQdgncI1lD1adbyVHGDgmcI",
-            authDomain: "videowand-43140.firebaseapp.com",
-            databaseURL: "https://videowand-43140-default-rtdb.europe-west1.firebasedatabase.app/",
-            projectId: "videowand-43140",
-            storageBucket: "videowand-43140.appspot.com",
-            messagingSenderId: "777250256351",
-            appId: "1:777250256351:web:f0700b48c645037c82006a"
+            apiKey: "AIzaSyAHpmiuGzh7bcfWMkYVCOleXaJeCA2ZnPM",
+            authDomain: "ostseepokal-3414c.firebaseapp.com",
+            databaseURL: "https://ostseepokal-3414c-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "ostseepokal-3414c",
+            storageBucket: "ostseepokal-3414c.firebasestorage.app",
+            messagingSenderId: "938458486681",
+            appId: "1:938458486681:web:4c9e1d63f54b27951aa508",
+            measurementId: "G-9WWDZJHRBY"
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -364,6 +365,12 @@
                     gamesByDate[gameDate].push(game);
                 }
 
+                gamesByDate.sort((a, b) => {
+                    const timeA = new Date(a.gameTime);
+                    const timeB = new Date(b.gameTime);
+                    return timeA - timeB;
+                });
+
                 for (const date in gamesByDate) {
                     const dateGroup = gamesByDate[date];
                     const groupDate = new Date(date);
@@ -406,12 +413,14 @@
                         const homeScore = homeTeam.score;
                         const awayScore = awayTeam.score;
 
-                        let result = '';
+                        let result, periode = '';
                         let gameDetails = `${formattedTime}`;
                         if (currentTime >= gameTime) {
                             result = (homeScore !== undefined && awayScore !== undefined) ? `${homeScore} : ${awayScore}` : '';
+                            periode = game.periode || "";
                         } else {
                             result = gameDetails;
+                            periode = "";
                         }
 
                         const gameNumber = game.gameNumber || translations[currentLanguage].game + " " + globalGameNumber++; // Spielnummer: Entweder aus DB oder inkrementieren
@@ -429,7 +438,7 @@
                                 </div>
                                 <div class="game-info middle">
                                     <div class="score">${result}</div>
-                                    <div class="periode">${game.periode || ""}</div>
+                                    <div class="periode">${periode}</div>
                                 </div>
                                 <div class="team">
                                     <span>${awayTeam.name}</span>
