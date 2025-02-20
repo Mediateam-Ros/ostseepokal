@@ -122,8 +122,8 @@
                         const gameTime = new Date(game.gameTime);
                         const homeTeam = game.home.name || "Heim";
                         const awayTeam = game.away.name || "Gast";
-                        const homeLogo = game.home.logo !== '../logo_leer.png' ? game.home.logo : '../logo_leer.png';
-                        const awayLogo = game.away.logo !== '../logo_leer.png' ? game.away.logo : '../logo_leer.png';
+                        const homeLogo = game.home.logo !== 'logo_leer.png' ? game.home.logo : '../logo_leer.png';
+                        const awayLogo = game.away.logo !== 'logo_leer.png' ? game.away.logo : '../logo_leer.png';
 
 
                         const formattedTime = `${gameTime.getHours()}:${String(gameTime.getMinutes()).padStart(2, '0')} Uhr`;
