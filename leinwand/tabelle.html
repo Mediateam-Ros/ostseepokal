@@ -230,7 +230,7 @@
                     tableHTML += `
                         <tr>
                             <td class="place">${place++}</td>
-                            <td class="team-logo-column"><img src="${teamData.logo}" alt="${team} Logo"></td> <!-- Logo-Spalte -->
+                            <td class="team-logo-column"><img src="${teamData.logo !== 'logo_leer.png' ? teamData.logo : '../logo_leer.png';}" alt="${team} Logo"></td> <!-- Logo-Spalte -->
                             <td class="team-name">${team}</td>
                             <td class="points">${teamData.points}</td>
                             <td class="games">${gamesCount[team]}</td>
