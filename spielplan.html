@@ -354,7 +354,7 @@
 
                 for (const gameId in gamesData) {
                     const game = gamesData[gameId];
-                    const gameTime = new Date(game.gameTime);
+                    const gameTime = new Date(game.gameTime + "Z");
                     const gameDate = gameTime.toLocaleDateString(
                         currentLanguage === 'de' ? 'de-DE' : (currentLanguage === 'en' ? 'en-GB' : 'sv-SE')
                     );
