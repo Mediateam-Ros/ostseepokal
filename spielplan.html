@@ -354,10 +354,9 @@
 
                 for (const gameId in gamesData) {
                     const game = gamesData[gameId];
-                    const gameTime = new Date(game.gameTime + "Z");
-                    const gameDate = gameTime.toLocaleDateString(
-                        currentLanguage === 'de' ? 'de-DE' : (currentLanguage === 'en' ? 'en-GB' : 'sv-SE')
-                    );
+                    const gameTime = new Date(game.gameTime);
+                    const gameDate = gameTime.toISOString().split("T")[0];
+
 
                     if (!gamesByDate[gameDate]) {
                         gamesByDate[gameDate] = [];
