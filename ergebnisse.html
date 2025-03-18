@@ -1,11 +1,67 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ostseepokal 2025 - Rostock</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .game-header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #dc092f;
+        }
+
+        .game {
+            background-color: #ffffff;
+            margin-bottom: 20px;
+            width: 100%;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            align-items: center;
+        }
+
+        .game-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .game-card .team {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .game-card .team img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            margin-left: 10px;
+        }
+
+        .game-card .game-info {
+            display: flex;
+            justify-content: center;
+            flex: 1;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .game-info .game-time {
+            font-size: 16px;
+            color: #dc092f;
+            margin-left: 10px;
+        }
+    </style>
 </head>
+
 <body>
     <header>
         <h1>Ostseepokal 2025 Ergebnisseintragungen</h1>
@@ -17,15 +73,14 @@
         <input type="email" id="email" placeholder="E-Mail" required />
         <input type="password" id="password" placeholder="Passwort" required />
         <button id="loginButton">Anmelden</button>
-        <div id="loginError" class="error-message" style="display: none;">Falsche Anmeldedaten. Bitte versuche es erneut.</div>
+        <div id="loginError" class="error-message" style="display: none;">Falsche Anmeldedaten. Bitte versuche es
+            erneut.</div>
         <div id="loginLoading" class="loading-message" style="display: none;">Bitte warten...</div>
     </div>
 
     <div id="mainContent" class="container" style="display: none;">
-        <div class="tabs">
-            <div id="tabButtons"></div>
-            <div id="tabContent"></div>
-        </div>
+        <div id="tabButtons" class="tab-buttons"></div>
+        <div id="tabContent"></div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
@@ -43,76 +98,96 @@
             appId: "1:938458486681:web:4c9e1d63f54b27951aa508",
             measurementId: "G-9WWDZJHRBY"
         };
-
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const database = firebase.database();
         const stadiumsDiv = document.getElementById("tabContent");
         const tabButtonsDiv = document.getElementById("tabButtons");
 
-        function padZero(num) {
-            return num.toString().padStart(2, "0");
+        function loginUser() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const loginError = document.getElementById("loginError");
+            const loginLoading = document.getElementById("loginLoading");
+
+            loginError.style.display = "none";
+            loginLoading.style.display = "block";
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    loginLoading.style.display = "none";
+                    document.getElementById("loginSection").style.display = "none";
+                    document.getElementById("mainContent").style.display = "block";
+                })
+                .catch((error) => {
+                    loginLoading.style.display = "none";
+                    loginError.style.display = "block";
+                });
         }
 
-        function createStadiumDiv(id, stadium) {
-            if (!stadium || !stadium.home || !stadium.away) {
-                console.error("Ungültiges Stadion-Objekt:", stadium);
-                return document.createElement("div");
-            }
+        function logoutUser() {
+            auth.signOut().then(() => {
+                document.getElementById("loginSection").style.display = "block";
+                document.getElementById("mainContent").style.display = "none";
+                document.getElementById("logoutButton").style.display = "none";
+            });
+        }
 
+        function createStadiumDiv(id, stadium, isFinished) {
             const stadiumDiv = document.createElement("div");
             stadiumDiv.classList.add("stadium");
+            if (isFinished) stadiumDiv.classList.add("finished-game");
 
-            const countdownElement = document.createElement("span");
+            const countdownElement = document.createElement("div");
             countdownElement.classList.add("countdown");
 
             function updateCountdown() {
                 let countdownText = "Nicht festgelegt";
-
                 if (stadium.gameTime) {
-                    const now = new Date();
-                    const gameDate = new Date(stadium.gameTime);
-                    const timeDiff = gameDate - now;
+                    const gameTime = new Date(stadium.gameTime);
 
-                    if (timeDiff > 24 * 60 * 60 * 1000) {
-                        countdownText = `Spiel am ${gameDate.toLocaleDateString("de-DE")}`;
-                    } else if (timeDiff > 0) {
-                        countdownText = `${padZero(Math.floor(timeDiff / (1000 * 60 * 60)))}:${padZero(Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60)))}:${padZero(Math.floor((timeDiff % (1000 * 60)) / 1000))}`;
-                    } else {
-                        countdownElement.style.backgroundColor = "#f44336";
-                        countdownText = "Spiel läuft";
-                    }
+                    const gameHour = gameTime.getHours().toString().padStart(2, '0');
+                    const gameMinute = gameTime.getMinutes().toString().padStart(2, '0');
+                    formattedTime = `${gameHour}:${gameMinute} Uhr`;
                 }
-                countdownElement.textContent = countdownText;
             }
-
-            setInterval(updateCountdown, 1000);
-
-            stadiumDiv.innerHTML = ` 
-                <div class="team">
-                    <img src="${stadium.home.logo}" alt="${stadium.home.name}">
-                    <span>${stadium.home.name}</span>
-                    <div class="score-buttons">
-                        <button onclick="updateScore('${id}', 'home', -1)">-</button>
-                        <span id="${id}-home-score">${stadium.home.score}</span>
-                        <button onclick="updateScore('${id}', 'home', 1)">+</button>
-                    </div>
-                </div>
-                <div class="team">
-                    <img src="${stadium.away.logo}" alt="${stadium.away.name}">
-                    <span>${stadium.away.name}</span>
-                    <div class="score-buttons">
-                        <button onclick="updateScore('${id}', 'away', -1)">-</button>
-                        <span id="${id}-away-score">${stadium.away.score}</span>
-                        <button onclick="updateScore('${id}', 'away', 1)">+</button>
-                    </div>
-                </div>
-                <div class="countdown-container"></div>
-            `;
-
-            stadiumDiv.querySelector(".countdown-container").appendChild(countdownElement);
             updateCountdown();
+
+            stadiumDiv.innerHTML = `
+                <div class="game">
+                    <div>
+                        <div class="game-info">
+                            <span class="game-time">${formattedTime}</span>
+                        </div>
+                        <div class="game-card">
+                            <div class="team">
+                                <img src="${stadium.home.logo}" alt="${stadium.home.name}">
+                                <span>${stadium.home.name}</span>
+                                <div class="score-buttons">
+                                    <button onclick="updateScore('${id}', 'home', -1)">-</button>
+                                    <span id="${id}-home-score">${stadium.home.score}</span>
+                                    <button onclick="updateScore('${id}', 'home', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="team">
+                                <img src="${stadium.away.logo}" alt="${stadium.away.name}">
+                                <span>${stadium.away.name}</span>
+                                <div class="score-buttons">
+                                    <button onclick="updateScore('${id}', 'away', -1)">-</button>
+                                    <span id="${id}-away-score">${stadium.away.score}</span>
+                                    <button onclick="updateScore('${id}', 'away', 1)">+</button>
+                                </div>
+                            </div>
+                            <button class="endstand" onclick="finalizeGame('${id}')">Endstand</button>
+                        </div>
+                    </div>
+                </div>
+            `;
             return stadiumDiv;
+        }
+
+        function finalizeGame(id) {
+            database.ref(`stadiums/${id}`).update({ periode: "Endstand" });
         }
 
         function renderStadiums(stadiums) {
@@ -137,38 +212,22 @@
 
         function showGames(date, games) {
             stadiumsDiv.innerHTML = "";
+
+            games.sort((a, b) => {
+                if (a.periode === "Endstand" && b.periode !== "Endstand") return 1;
+                if (b.periode === "Endstand" && a.periode !== "Endstand") return -1;
+                return new Date(a.gameTime) - new Date(b.gameTime);
+            });
+
             games.forEach(({ id, ...game }) => {
-                stadiumsDiv.appendChild(createStadiumDiv(id, game));
+                const stadiumDiv = createStadiumDiv(id, game, game.periode === "Endstand");
+                stadiumsDiv.appendChild(stadiumDiv);
             });
         }
 
-        function loginUser() {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-            const loginError = document.getElementById("loginError");
-            const loginLoading = document.getElementById("loginLoading");
-            
-            loginError.style.display = "none";
-            loginLoading.style.display = "block";
-
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    loginLoading.style.display = "none";
-                    document.getElementById("loginSection").style.display = "none";
-                    document.getElementById("mainContent").style.display = "block";
-                })
-                .catch((error) => {
-                    loginLoading.style.display = "none";
-                    loginError.style.display = "block";
-                });
-        }
-
-        function logoutUser() {
-            auth.signOut().then(() => {
-                document.getElementById("loginSection").style.display = "block";
-                document.getElementById("mainContent").style.display = "none";
-                document.getElementById("logoutButton").style.display = "none";
-            });
+        function updateScore(id, team, change) {
+            const scoreRef = database.ref(`stadiums/${id}/${team}/score`);
+            scoreRef.transaction((currentScore) => (currentScore || 0) + change);
         }
 
         document.getElementById("loginButton").addEventListener("click", loginUser);
@@ -178,5 +237,30 @@
             renderStadiums(snapshot.val() || {});
         });
     </script>
+
+    <style>
+        .finished-game {
+            background-color: #e0e0e0;
+            color: #888;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .finished-game:hover {
+            cursor: not-allowed;
+        }
+
+        .tab-buttons button {
+            padding: 10px;
+            font-size: 20px;
+            margin-right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </body>
+
 </html>

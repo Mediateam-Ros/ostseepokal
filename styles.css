@@ -407,6 +407,16 @@ button#addTeamButton:hover {
     cursor: pointer;
 }
 
+.endstand {
+    padding: 10px;
+    font-size: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .period-buttons-container button:hover {
     background-color: #45a049;
 }
