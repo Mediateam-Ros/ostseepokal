@@ -68,12 +68,14 @@
             position: relative;
             bottom: 0;
         }
+
         .footer a {
             color: white;
             margin: 0 10px;
             text-decoration: none;
             font-size: 20px;
         }
+
         .footer a:hover {
             color: #1da1f2;
         }
@@ -228,12 +230,20 @@
             tabButtonsDiv.innerHTML = "";
             stadiumsDiv.innerHTML = "";
 
+            const storedTab = localStorage.getItem("activeTab") || Object.keys(gamesByDate)[0];
+
             Object.keys(gamesByDate).forEach((date, index) => {
                 const button = document.createElement("button");
                 button.textContent = date;
-                button.onclick = () => showGames(date, gamesByDate[date]);
+                button.onclick = () => {
+                    localStorage.setItem("activeTab", date);
+                    showGames(date, gamesByDate[date]);
+                };
                 tabButtonsDiv.appendChild(button);
-                if (index === 0) showGames(date, gamesByDate[date]);
+
+                if (date === storedTab) {
+                    showGames(date, gamesByDate[date]);
+                }
             });
         }
 
