@@ -6,6 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Videowand Steuerung</title>
     <link rel="stylesheet" href="styles.css">
+    <styles>
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            bottom: 0;
+        }
+        .footer a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 20px;
+        }
+        .footer a:hover {
+            color: #1da1f2;
+        }
+    </styles>
 </head>
 
 <body>
@@ -85,6 +104,15 @@
             <button class="close-btn" onclick="closeTeamSelectModal()">Schließen</button>
         </div>
     </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Ostseepokal | Erstellt durch </p> <a href="mailto: kuehl.anthony@outlook.de">Anthony Kühl</a>
+        <p>
+            <a href="https://www.facebook.com/recfreibeuter" target="_blank">Facebook</a>
+            |
+            <a href="https://www.instagram.com/rostock.freibeuter" target="_blank">Instagram</a>
+        </p>
+    </footer>
 
     <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
