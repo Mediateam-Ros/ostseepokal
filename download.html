@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logos (Ostseepokal 2025) herunterladen</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        #imageContainer img { width: 150px; margin: 10px; display: inline-block; }
+        button { padding: 10px; margin-top: 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Logos (Ostseepokal 2025) herunterladen</h1>
+    <div id="imageContainer">
+        <img src="./logos/altona.jpg" alt="Altona">
+        <img src="./logos/benchwarmers.jpg" alt="Benchwarmers">
+        <img src="./logos/berlin.jpg" alt="Berlin">
+        <img src="./logos/halle.png" alt="Halle">
+        <img src="./logos/lanzlaget.png" alt="Lanzlaget">
+        <img src="./logos/royal.jpeg" alt="Team Royal">
+        <img src="./logos/weisswasser.png" alt="Weisswasser">
+    </div>
+    <button onclick="downloadImages()">Alle Logos herunterladen</button>
+
+    <script>
+        function downloadImages() {
+            const images = document.querySelectorAll('#imageContainer img');
+            images.forEach((img, index) => {
+                fetch(img.src)
+                    .then(response => response.blob())
+                    .then(blob => {
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = `bild_${index + 1}.jpg`;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    })
+                    .catch(console.error);
+            });
+        }
+    </script>
+</body>
+</html>
