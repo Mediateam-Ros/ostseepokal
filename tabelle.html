@@ -263,12 +263,14 @@
             position: relative;
             bottom: 0;
         }
+
         .footer a {
             color: white;
             margin: 0 10px;
             text-decoration: none;
             font-size: 20px;
         }
+
         .footer a:hover {
             color: #1da1f2;
         }
@@ -425,6 +427,13 @@
                 Object.keys(gamesData).forEach(gameId => {
                     const game = gamesData[gameId];
                     if (game.periode !== "Endstand") return;
+
+                    const gameDate = new Date(game.gameTime);
+                    const excludedDate = new Date("2025-04-06");
+
+                    // Prüfe, ob das Spiel am 06.04.2025 stattfand – wenn ja, überspringen
+                    if (gameDate.toDateString() === excludedDate.toDateString()) return;
+
 
                     const homeTeam = game.home.name || "Home";
                     const awayTeam = game.away.name || "Away";
