@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ostseepokal - Spielplan & Ergebnisse</title>
+    <title>Ostseepokal</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -96,95 +96,6 @@
             background-color: #a40725;
         }
 
-        /* Spielplan und Ergebnisse */
-        #game-schedule {
-            margin: 20px;
-            padding: 20px;
-            border-radius: 15px;
-            background-color: white;
-            box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .game-header {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #dc092f;
-        }
-
-        /* Neu gestaltete Spielplankarten */
-        .game {
-            background-color: #ffffff;
-            margin-bottom: 20px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-            align-items: center;
-        }
-
-        .game-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .game-card .team {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex: 1;
-        }
-
-        .game-card .team img {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-        }
-
-        .game-card .game-info {
-            display: flex;
-            justify-content: center;
-            flex: 1;
-            align-items: center;
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .game-card .game-info .game-time {
-            font-size: 16px;
-            color: #dc092f;
-            margin-right: 20px;
-        }
-
-        .game-card .game-info .score {
-            font-size: 22px;
-            color: #dc092f;
-        }
-
-        .game-card .game-info .game-date {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-            margin-right: 20px;
-        }
-
-        .all-games-link {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .all-games-link a {
-            font-size: 18px;
-            color: #dc092f;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .all-games-link a:hover {
-            text-decoration: underline;
-        }
-
         /* Media Queries für kleinere Bildschirme */
         @media (max-width: 768px) {
             header {
@@ -204,38 +115,11 @@
                 flex-direction: column;
                 gap: 10px;
             }
-
-            .game-card {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .game-card .team {
-                margin-bottom: 10px;
-            }
-
-            .game-card .game-info {
-                font-size: 16px;
-                margin-bottom: 10px;
-            }
         }
 
         @media (max-width: 480px) {
             header h1 {
                 font-size: 20px;
-            }
-
-            .game-card .team img {
-                width: 30px;
-                height: 30px;
-            }
-
-            .game-card .game-info {
-                font-size: 14px;
-            }
-
-            .all-games-link a {
-                font-size: 16px;
             }
         }
 
@@ -247,29 +131,192 @@
             position: relative;
             bottom: 0;
         }
+
         .footer a {
             color: white;
             margin: 0 10px;
             text-decoration: none;
             font-size: 20px;
         }
+
         .footer a:hover {
             color: #1da1f2;
+        }
+
+        /* Abschlusstext */
+        .farewell-message {
+            margin: 40px 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        /* Treppchen-Styling */
+        .podium {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 20px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .podium-place {
+            width: 100px;
+            background-color: #dc092f;
+            color: white;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            font-weight: bold;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .podium-place .place {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .podium-place .team-name {
+            background-color: white;
+            color: #dc092f;
+            padding: 8px;
+            width: 100%;
+            border-radius: 0 0 10px 10px;
+            font-size: 16px;
+        }
+
+        /* Höhen für Treppchen */
+        .first {
+            height: 160px;
+        }
+
+        .second {
+            height: 120px;
+        }
+
+        .third {
+            height: 100px;
+        }
+
+        @media (max-width: 600px) {
+            .podium {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .podium-place {
+                width: 80%;
+                height: auto !important;
+            }
+        }
+
+        .other-teams {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin: 40px auto;
+            padding: 0 20px;
+            max-width: 1000px;
+        }
+
+        .other-team {
+            background: linear-gradient(135deg, #ffffff, #f2f2f2);
+            border: 2px solid #e5e5e5;
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease;
+        }
+
+        .other-team:hover {
+            transform: translateY(-4px);
+        }
+
+        .other-team .place {
+            font-size: 20px;
+            font-weight: bold;
+            color: #dc092f;
+            margin-right: 10px;
+        }
+
+        .other-team .team-name {
+            font-size: 18px;
+            font-weight: 500;
+            flex: 1;
+            text-align: left;
+            color: #333;
+        }
+
+        @media (max-width: 500px) {
+            .other-team {
+                flex-direction: column;
+                text-align: center;
+                padding: 14px;
+            }
+
+            .other-team .place {
+                margin-right: 0;
+                margin-bottom: 6px;
+            }
+
+            .other-team .team-name {
+                text-align: center;
+            }
+        }
+
+        .closing-text {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 30px;
+            background: linear-gradient(135deg, #ffffff, #f8f8f8);
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .closing-text h2 {
+            font-size: 28px;
+            color: #dc092f;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .closing-text p {
+            margin-bottom: 16px;
+            font-size: 18px;
+            text-align: justify;
+        }
+
+        .goodbye-line {
+            font-weight: bold;
+            text-align: center;
+            font-style: italic;
+            margin-top: 30px;
         }
     </style>
 </head>
 
 <body>
-
     <header>
         <div class="logo-container">
             <img src="logo_homepage.png" alt="Ostseepokal Logo">
-            <h1 id="title">Ostseepokal 2025</h1>
+            <h1 id="title">Ostseepokal</h1>
         </div>
-        <nav>
+        <!-- <nav>
             <a href="spielplan.html" id="spielplan" class="nav-link">Spielplan und Ergebnisse</a>
             <a href="tabelle.html" id="table" class="nav-link">Tabelle</a>
-        </nav>
+        </nav> -->
         <div class="language-selector">
             <select id="languageSelector">
                 <option value="de">Deutsch</option>
@@ -279,10 +326,25 @@
         </div>
     </header>
 
-    <div id="game-schedule">
-        <h2 id="schedule-title">Spielplan</h2>
-        <div id="schedule"></div>
+    <div id="farewell-container">
+        <div id="farewell-message" class="farewell-message"></div>
+        <div class="podium">
+            <div class="podium-place second">
+                <div class="place">2</div>
+                <div class="team-name" id="secondPlace">Team B</div>
+            </div>
+            <div class="podium-place first">
+                <div class="place">1</div>
+                <div class="team-name" id="firstPlace">Team A</div>
+            </div>
+            <div class="podium-place third">
+                <div class="place">3</div>
+                <div class="team-name" id="thirdPlace">Team C</div>
+            </div>
+        </div>
+        <div id="other-teams" class="other-teams"></div>
     </div>
+
 
     <footer class="footer">
         <p>&copy; 2025 Ostseepokal | Erstellt durch </p> <a href="mailto: kuehl.anthony@outlook.de">Anthony Kühl</a>
@@ -297,25 +359,11 @@
     <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-database-compat.js"></script>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyAHpmiuGzh7bcfWMkYVCOleXaJeCA2ZnPM",
-            authDomain: "ostseepokal-3414c.firebaseapp.com",
-            databaseURL: "https://ostseepokal-3414c-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "ostseepokal-3414c",
-            storageBucket: "ostseepokal-3414c.firebasestorage.app",
-            messagingSenderId: "938458486681",
-            appId: "1:938458486681:web:4c9e1d63f54b27951aa508",
-            measurementId: "G-9WWDZJHRBY"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-
         let currentLanguage = 'de';
 
         const translations = {
             de: {
-                title: 'Ostseepokal 2025',
+                title: 'Ostseepokal',
                 subtitle: 'Alle Spiele und Ergebnisse auf einen Blick',
                 scheduleTitle: 'Spielplan und Ergebnisse',
                 tableTitle: 'Tabelle',
@@ -324,7 +372,7 @@
                 viewAllGames: 'Alle Spiele sehen'
             },
             en: {
-                title: 'Ostseepokal 2025',
+                title: 'Ostseepokal',
                 subtitle: 'All games and results at a glance',
                 scheduleTitle: 'Schedule & Results',
                 tableTitle: 'Table',
@@ -333,7 +381,7 @@
                 viewAllGames: 'See all games'
             },
             sv: {
-                title: 'Ostseepokal 2025',
+                title: 'Ostseepokal',
                 subtitle: 'Alla spel och resultat på ett ställe',
                 scheduleTitle: 'Spelschema & Resultat',
                 tableTitle: 'Tabell',
@@ -343,138 +391,85 @@
             }
         };
 
-
-
         document.getElementById('languageSelector').addEventListener('change', (e) => {
             currentLanguage = e.target.value;
             updateLanguage();
-            loadGames();
+            showFarewellMessage();
         });
 
         function updateLanguage() {
             const lang = translations[currentLanguage];
             document.getElementById('title').innerText = lang.title;
-            document.getElementById('schedule-title').innerText = lang.scheduleTitle;
-            document.getElementById('spielplan').innerText = lang.scheduleTitle;
-            document.getElementById('table').innerText = lang.tableTitle;
         }
 
+        function showFarewellMessage() {
+            const farewellTexts = {
+                de: `
+            <h2>Vielen Dank für ein unvergessliches Turnier!</h2>
+            <p>Der Ostseepokal 2025 ist Geschichte – und was für eine Geschichte es war! Drei Tage voller Emotionen, Fairplay,
+            Leidenschaft und Teamgeist liegen hinter uns. Ob auf dem Spielfeld oder daneben – ihr alle habt dieses Turnier
+            zu etwas ganz Besonderem gemacht.</p>
+            <p>Wir gratulieren allen Teams zu ihren tollen Leistungen und danken euch für eure sportliche Einstellung,
+            eure Energie und euren Teamzusammenhalt.</p>
+            <p>Ein riesiges Dankeschön geht auch an alle Helfer:innen, Schiedsrichter:innen, Organisator:innen,
+            Fans und Unterstützer:innen. Ohne euch wäre dieses Event nicht möglich gewesen.</p>
+            <p>Wir hoffen, ihr hattet genauso viel Spaß wie wir – und vielleicht sehen wir uns 2026 wieder!</p>
+            <p class="goodbye-line">Macht’s gut & bleibt sportlich – euer Ostseepokal-Team! </p>
+        `,
+                en: `
+            <h2>Thank you for an unforgettable tournament!</h2>
+            <p>Ostseepokal 2025 has come to an end – and what a journey it was! Three days full of excitement, fair play,
+            passion, and team spirit. Whether on the field or on the sidelines – each of you made this event truly special.</p>
+            <p>Congratulations to all teams for their amazing performances. Your energy, commitment, and unity
+            were a pleasure to watch.</p>
+            <p>A huge thank you to all volunteers, referees, organizers, fans, and supporters. This wouldn’t have been
+            possible without you!</p>
+            <p>We hope you had as much fun as we did – and who knows, maybe we’ll meet again in 2026!</p>
+            <p class="goodbye-line">Take care & stay sporty – your Ostseepokal team! </p>
+        `,
+                sv: `
+            <h2>Tack för en oförglömlig turnering!</h2>
+            <p>Ostseepokal 2025 är över – och vilken fantastisk upplevelse det har varit! Tre dagar fyllda med glädje, fair play,
+            passion och laganda. På och utanför planen har ni alla gjort turneringen minnesvärd.</p>
+            <p>Stort grattis till alla lag för era fina insatser. Det var en ära att få följa ert spel och er gemenskap.</p>
+            <p>Ett extra tack till alla funktionärer, domare, arrangörer, fans och supportrar. Utan er – inget event!</p>
+            <p>Vi hoppas att ni haft det lika roligt som vi – och kanske ses vi igen 2026!</p>
+            <p class="goodbye-line">Sköt om er & håll igång – hälsningar från Ostseepokal-teamet!</p>
+        `
+            };
 
-        async function loadGames() {
-            try {
-                const gamesSnapshot = await database.ref('stadiums').once('value');
-                const gamesData = gamesSnapshot.val();
+            const teams = [
+                "Saale Bulls Halle 1b", // 1
+                "REC Freibeuter",       // 2
+                "Team Royal",           // 3
+                "Weisswasser",          // 4
+                "Benchwarmers",         // 5
+                "Lantzlaget",           // 6
+                "Berlin",               // 7
+                "Altonaer SV"           // 8
+            ];
 
-                if (!gamesData) {
-                    console.log(translations[currentLanguage].noGamesFound);
-                    return;
-                }
+            // Top 3
+            document.getElementById("firstPlace").innerText = teams[0];
+            document.getElementById("secondPlace").innerText = teams[1];
+            document.getElementById("thirdPlace").innerText = teams[2];
 
-                const scheduleContainer = document.getElementById("schedule");
-                scheduleContainer.innerHTML = '';  // Vorherigen Inhalt löschen
+            // Abschiedstext einfügen
+            document.getElementById("farewell-message").innerHTML = farewellTexts[currentLanguage];
 
-                const gamesByDate = {};
-                const currentTime = new Date();
-
-                let count = 0;  // Zähler für die nächsten 4 Spiele
-                for (const gameId in gamesData) {
-                    const game = gamesData[gameId];
-                    const gameTime = new Date(game.gameTime);
-
-                    // Nur Spiele, die entweder aktuell laufen oder in den nächsten 4 Stunden stattfinden
-                    if (gameTime >= currentTime && count < 4) {
-                        const gameDate = gameTime.toLocaleDateString(currentLanguage === 'de' ? 'de-DE' : (currentLanguage === 'en' ? 'en-GB' : 'sv-SE'));
-                        if (!gamesByDate[gameDate]) {
-                            gamesByDate[gameDate] = [];
-                        }
-                        gamesByDate[gameDate].push(game);
-                        count++;
-                    }
-                }
-
-                // Spiele nach Datum gruppiert anzeigen
-                for (const date in gamesByDate) {
-                    const dateGroup = gamesByDate[date];
-                    const groupDate = new Date(date);
-
-                    const groupHeader = groupDate.toLocaleDateString(currentLanguage === 'de' ? 'de-DE' : (currentLanguage === 'en' ? 'en-GB' : 'sv-SE'), {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-
-                    scheduleContainer.innerHTML += `
-                <div class="game-header">${groupHeader}</div>
-            `;
-
-                    dateGroup.forEach(game => {
-                        const homeTeam = game.home;
-                        const awayTeam = game.away;
-                        const gameTime = new Date(game.gameTime);
-
-                        let formattedTime;
-                        let hourLabel = translations[currentLanguage].hourLabel;
-
-                        if (currentLanguage === 'en') {
-                            const gameHour = gameTime.getHours();
-                            const gameMinute = gameTime.getMinutes().toString().padStart(2, '0');
-                            const ampm = gameHour >= 12 ? 'PM' : 'AM';
-                            const formattedHour = gameHour % 12 === 0 ? 12 : gameHour % 12;
-                            formattedTime = `${formattedHour}:${gameMinute} ${ampm}`;
-                        } else {
-                            const gameHour = gameTime.getHours().toString().padStart(2, '0');
-                            const gameMinute = gameTime.getMinutes().toString().padStart(2, '0');
-                            formattedTime = `${gameHour}:${gameMinute} ${hourLabel}`;
-                        }
-
-                        const homeScore = homeTeam.score;
-                        const awayScore = awayTeam.score;
-
-                        let result = '';
-                        let gameDetails = `${formattedTime}`;
-                        if (currentTime >= gameTime) {
-                            result = (homeScore !== undefined && awayScore !== undefined) ? `${homeScore} : ${awayScore}` : '';
-                        } else {
-                            result = gameDetails;
-                        }
-
-                        scheduleContainer.innerHTML += `
-                    <div class="game">
-                        <div class="game-card">
-                            <div class="team">
-                                <img src="${homeTeam.logo}" alt="${homeTeam.name} Logo">
-                                <span>${homeTeam.name}</span>
-                            </div>
-                            <div class="game-info">
-                                <div class="score">${result}</div>
-                            </div>
-                            <div class="team">
-                                <img src="${awayTeam.logo}" alt="${awayTeam.name} Logo">
-                                <span>${awayTeam.name}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                    });
-                }
-
-                // Link zu allen Spielen unter den 4 Spielen hinzufügen
-                scheduleContainer.innerHTML += `
-            <div class="all-games-link">
-                <a href="spielplan.html">${translations[currentLanguage].viewAllGames}</a>
-            </div>
-        `;
-
-            } catch (error) {
-                console.error("Fehler beim Laden der Daten:", error);
+            // Plätze 4 bis 8
+            const otherTeamsContainer = document.getElementById("other-teams");
+            otherTeamsContainer.innerHTML = ""; // leeren
+            for (let i = 3; i < teams.length; i++) {
+                const div = document.createElement("div");
+                div.className = "other-team";
+                div.innerHTML = `<span class="place">${i + 1}.</span> <span class="team-name">${teams[i]}</span>`;
+                otherTeamsContainer.appendChild(div);
             }
         }
 
-        updateLanguage();  // Initialisieren der Sprache
-        loadGames();
-        setInterval(loadGames, 10000); // Alle 10 Sekunden aktualisieren
-
+        showFarewellMessage();
+        updateLanguage();
     </script>
 </body>
 
